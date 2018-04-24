@@ -1,0 +1,82 @@
+.jumbotron{
+  margin-bottom: 30px;
+  margin-left: 7%;
+  margin-right: 7%;
+  margin-top: -10px;
+  background-color: rgb(63, 63, 204);
+  border: solid 5px black;
+
+}
+
+.container-schedule{
+  border: solid 3px black;
+  margin-bottom: 25px;
+  padding: 2%;
+  background-color: rgb(255, 255, 255)
+}
+.container-input{
+  border: solid 3px black;
+  margin-bottom: 25px;
+  padding: 1%;
+  background-color: rgb(255, 255, 255)
+
+}
+.appendrows{
+  background-color: rgb(255, 255, 255)
+}
+
+.schedBody{
+  background-color: rgb(121, 121, 121)
+}
+
+h6{
+  background-color: rgb(63, 63, 204);
+  text-align: center
+    border: solid 3px black;
+
+
+}
+.inputHeader{
+  padding: 2%;
+
+}
+
+.input-header{
+  background-color: rgb(72, 72, 177);
+  border: solid 3px black;
+
+
+
+}
+
+.form-group-input{
+  padding-left: 2%;
+  padding-right: 2%;
+}
+
+button{
+  
+  border-radius: 26px;
+  background-color: rgb(73, 60, 255);
+  color: white;
+  font-size: 16px;
+  text-align: center;
+  margin-bottom: 1%;
+  margin-left: 2%;
+  
+}
+
+td, tr, th{
+  text-align: center
+
+}
+
+h6{
+  text-align: center;
+  background-color: rgb(63, 63, 204);
+  
+}
+
+body{
+  background-color: rgb(114, 114, 114)
+}

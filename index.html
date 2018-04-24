@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../../../favicon.ico">
+
+    <title>Jumbotron Template for Bootstrap</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="Assets/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="Assets/css/jumbotron.css" rel="stylesheet">
+    <link href="Assets/css/style.css" rel="stylesheet">
+    
+    
+
+  </head>
+
+  <body>
+    <main role="main">
+
+      <!-- Main jumbotron for a primary marketing message or call to action -->
+      <div class="jumbotron">
+        <div class="container container-jumbo">
+          <h1 class="display-3" style="text-align: center">Today's Train Schedule</h1>
+          <h6>Have a look at the Train Schedule below. If you want to make a train depart on your time, just time it in below. In the Minutes Away field, you can see how long until your train arrives. Don't Miss it! Or Do, then just schedule another one!! </h6>
+          <div id="displayMoment"></div>
+        </div>
+      </div>
+    </main>
+
+   
+      <div class="container container-schedule">
+            <thead class="thead-dark">
+          <h4><u>Today's Train Schedule</u></h4>
+        </thead>
+
+          <table class="table table-schedule">
+              <tr>
+                <th>Train Name</th>
+                <th>Destination</th>
+                <th>Frequency (Mins)</th>
+                <th>Next Arrival</th>
+                <th>Minutes Away</th>
+              </tr>
+            <tbody class = "schedBody">
+              <tr>
+
+              </tr>
+            </tbody>
+          </table>
+        </div>
+          <br>
+       
+          <div class = "container container-input">
+              <div class = "inputHeader">
+                  <h4><u>Create New Trip</u></h4>     
+                </div> 
+                 
+                
+          <div class="form-group form-group-input">
+                <label for="name">Train Name:</label>
+                 <input type="text" class="form-control" id="name">
+            </div>
+            <div class="form-group form-group-input">
+                <label for="dest">Destination:</label>
+                <input type="destination" class="form-control" id="dest">
+            </div>
+            <div class="form-group form-group-input">
+                <label for="time">First Train Time (HH:MM - Military Time):</label>
+                <input type="train-time" class="form-control" id="time">
+            </div>
+            <div class="form-group form-group-input">
+                    <label for="frq">Frequency (Mins):</label>
+                    <input type="frequency" class="form-control" id="frq">
+            </div>
+            
+          
+            <br>
+            
+              <button class="btn btn-default"  id="submitTrain" type="submit">Submit</button>
+            
+          </div>
+        </div>
+         
+          
+       
+
+   
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script>window.jQuery || document.write('<script src="../../../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+    <script src="../../../../assets/js/vendor/popper.min.js"></script>
+    <script src="../../../../dist/js/bootstrap.min.js"></script>
+    
+
+    <script src="https://www.gstatic.com/firebasejs/4.13.0/firebase.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment.min.js"></script>
+<script>
+  // Initialize Firebase
+  (function()
+{
+  // instantiate a moment object
+  var NowMoment = moment();
+  
+  // instantiate a JavaScript Date object
+  var NowDate = new Date();
+  
+  // display value of moment object in #displayMoment div
+  var eDisplayMoment = document.getElementById('displayMoment');
+  eDisplayMoment.innerHTML = NowMoment;
+});
+
+
+  var config = {
+    apiKey: "AIzaSyAhOQpEtIZRynzkXGzvWCRm-qVxqx4ApEs",
+    authDomain: "train-schedule-729f6.firebaseapp.com",
+    databaseURL: "https://train-schedule-729f6.firebaseio.com",
+    projectId: "train-schedule-729f6",
+    storageBucket: "train-schedule-729f6.appspot.com",
+    messagingSenderId: "625709841180"
+  };
+  firebase.initializeApp(config);
+
+
+var database = firebase.database();
+  
+
+
+var trainName = "";
+var trainDest = "";
+var firstTrain = "";
+var trainFreq = "";
+
+
+$("#submitTrain").on("click", function (){
+
+  event.preventDefault();
+
+
+  trainName = $("#name").val().trim();
+  trainDest = $("#dest").val().trim();
+  firstTrain = $("#time").val().trim();
+  trainFreq = $("#frq").val().trim();
+
+
+  var rootRef = database.ref("All-Trains");
+
+  rootRef.push({ 
+
+trainName: trainName,
+trainDest: trainDest,
+firstTrain: firstTrain,
+trainFreq: trainFreq
+
+});
+
+
+
+});
+
+ var dbRef = firebase.database().ref().child("All-Trains");
+ var allTrain = "All-Trains"
+
+
+
+dbRef.on('value', function(snapshot){
+  $(".appendrows").empty();
+
+
+dbRef.once("value", function(snapshot){
+  snapshot.forEach(function(child){
+    console.log("     Train's Departing")
+    console.log("Train Name: " +child.val().trainName);
+    console.log("Train Destination: " +child.val().trainDest);
+    console.log("Train Departure: " +child.val().firstTrain);
+    console.log("Train Frequency: " +child.val().trainFreq);
+  })
+
+
+
+
+
+ 
+    dbRef.on('child_added', function(childSnapshot) {
+  // find when the next train is and minutes until next train
+  var tfrequency = childSnapshot.val().trainFreq;
+  // pushed back 1 year to make sure it comes before current time
+  var convertedDate = moment(childSnapshot.val().firstTrain, 'hh:mm').subtract(1, 'years');
+  var trainTime = moment(convertedDate).format('HH:mm');
+  var currentTime = moment();
+  // pushed back 1 year to make sure it comes before current time
+  var firstTimeConverted = moment(trainTime,'hh:mm').subtract(1, 'years');
+  var diffTime = moment().diff(moment(firstTimeConverted), "minutes");
+  var tRemainder = diffTime % tfrequency;
+  var tMinutesTillTrain = tfrequency - tRemainder;
+  
+  var nextTrain = moment().add(tMinutesTillTrain, 'minutes').format('HH:mm')
+  
+ console.log(tMinutesTillTrain);
+
+
+    var childData = childSnapshot.val();
+    var addRow = '<tr class = "appendrows">' + 
+                    '<td>' + childData.trainName + '</td>' +
+                    '<td>' + childData.trainDest + '</td>' +
+                    '<td>' + childData.firstTrain + '</td>' +
+                    '<td>' + childData.trainFreq + '</td>' +
+                    '<td>' + tMinutesTillTrain  + '</td>' +
+
+                  '</tr>';
+
+        $(".schedBody").append(addRow)
+    });
+ 
+
+
+    });
+  }, function (error){
+    console.log("Error: " + error.code);
+  })
+
+
+  setInterval(function(){
+    location.reload();
+  }, 60000)
+
+ 
+
+    
+
+</script>
+  </body>
+</html>
